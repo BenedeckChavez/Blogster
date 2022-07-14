@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "14" #version of node
+dist: trusty #Distribution Ubuntu Trusty 14.04
+services:
+  - mongodb
+  - redis-server
+env:
+  - NODE_ENV=ci PORT=3000
+cache:
+  directories:
+    - node_modules
+    - client/node_modules
+install:
+  - npm install
+  - npm run build
+script:
+  #nohup - if the shell is closed, dont kill anything this command creates
+  #npm run start - run the server
+  #& - run this command in a sub shell (in the background)
+  - nohup npm run start &
+  #sleep x - wait for x seconds
+  - sleep 3
+  - npm run test
